@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: pink;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .container {
+            position: relative;
+        }
+        h1 {
+            font-size: 2em;
+            color: red;
+        }
+        .buttons, .location-buttons {
+            margin-top: 20px;
+            position: relative;
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: transform 0.2s ease;
+            position: relative;
+        }
+        #yes {
+            background-color: lightgreen;
+        }
+        #no, #cafeteria {
+            background-color: lightcoral;
+            position: relative;
+        }
+        #library {
+            background-color: lightblue;
+        }
+        .hidden {
+            display: none;
+        }
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 id="question">Hi, has your boyfriend asked to be his valentine yet? 😒😒😒</h1>
+    <div class="buttons">
+        <button id="yes">Yes</button>
+        <button id="no">No</button>
+    </div>
+
+    <div class="location-buttons hidden">
+        <h1>Anyway, I'll ask on his behalf once again</h1>
+        <h1>Will you be my(his😉) Valentine?</h1>
+        <button id="cafeteria">NO</button>
+        <button id="middle">Yeah why not</button>
+        <button id="library">Yesssssssss</button>
+    </div>
+
+    <div class="confetti hidden" id="confetti"></div>
+</div>
+
+<script>
+    let noButton = document.getElementById("no");
+    let yesButton = document.getElementById("yes");
+    let question = document.getElementById("question");
+    let buttonsContainer = document.querySelector(".buttons");
+    let locationContainer = document.querySelector(".location-buttons");
+    let cafeteriaButton = document.getElementById("cafeteria");
+    let unbothButton = document.getElementById("middle");
+    let libraryButton = document.getElementById("library");
+    let confettiContainer = document.getElementById("confetti");
+
+    let moveAttempts = 0;
+    const maxAttempts = 500;
+
+    function moveButton(button) {
+        if (moveAttempts < maxAttempts) {
+            let offsetX = (Math.random() * 140) - 30; // Move slightly left or right
+            let offsetY = (Math.random() * 120) - 30; // Move slightly up or down
+            button.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            moveAttempts++;
+        }
+    }
+
+    noButton.addEventListener("mouseenter", function () {
+        moveButton(noButton);
+    });
+
+    yesButton.addEventListener("click", function () {
+        question.innerText = "Ha Ha knew it, you would remember very CLEARLY that he asked 😊😊😊";
+        buttonsContainer.classList.add("hidden");
+        locationContainer.classList.remove("hidden");
+        moveAttempts = 0; // Reset move attempts for cafeteria
+    });
+
+    cafeteriaButton.addEventListener("mouseenter", function () {
+        moveButton(cafeteriaButton);
+    });
+
+    unbothButton.addEventListener("click", function () {
+        question.innerText = "You can do better, refresh the tab and try again 😉😉😉";
+        locationContainer.classList.add("hidden");
+        
+    });
+
+    libraryButton.addEventListener("click", function () {
+        question.innerText = "Yayyyyyyyyyyyy! 🎉";
+        locationContainer.classList.add("hidden");
+        showConfetti();
+    });
+
+    function showConfetti() {
+        let confettiCount = 100;
+        for (let i = 0; i < confettiCount; i++) {
+            let confettiPiece = document.createElement("div");
+            confettiPiece.style.position = "absolute";
+            confettiPiece.style.width = "10px";
+            confettiPiece.style.height = "10px";
+            confettiPiece.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            confettiPiece.style.left = `${Math.random() * window.innerWidth}px`;
+            confettiPiece.style.top = `-${Math.random() * 100}px`;
+            confettiPiece.style.opacity = Math.random();
+            confettiPiece.style.transform = `rotate(${Math.random() * 360}deg)`;
+            confettiPiece.style.animation = "fall 2s linear infinite";
+            confettiContainer.appendChild(confettiPiece);
+        }
+        confettiContainer.classList.remove("hidden");
+
+        let style = document.createElement("style");
+        style.innerHTML = `
+            @keyframes fall {
+                to {
+                    transform: translateY(${window.innerHeight}px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+</script>
+
+</body>
+</html>
